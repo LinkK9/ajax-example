@@ -34,10 +34,13 @@
 
                 <tbody>
                     <tr>
-                        <td colspan="5" class="text-center">
-                            <div class="spinner-border" role="status">
-                                <span class="sr-only">Loading...</span>
-                            </div>
+                        <td class="name">trinh viet linh</td>
+                        <td>26/10/1992</td>
+                        <td>linhtrinhviet@gmail.com</td>
+                        <td>0369232329</td>
+                        <td>
+                            <a href="#"><i class="fa fa-edit"></i> Chỉnh sửa</a>
+                            <a href="#"><i class="fa fa-trash-alt"></i> Xóa</a>
                         </td>
                     </tr>
                 </tbody>
@@ -56,39 +59,83 @@
     <script src='/js/api.js'></script>
 
     <script>
-        $(function () {
-            getUsersAPI(renderContent);
-        })
+        // $(function () {
+        //     getUsersAPI(renderContent);
+        // })
 
-        function renderContent(users) {
-            let htmlContent = '';
+        // function renderContent(users) {
+        //     let htmlContent = '';
 
-            for (let i = 0; i < users.length; i++) {
-                htmlContent += '<tr>';
-                htmlContent += '<td>' + users[i].name + '</td>';
-                htmlContent += '<td>' + (users[i].birthYear || 'Chưa biết') + '</td>';
-                htmlContent += '<td>' + users[i].email + '</td>';
-                htmlContent += '<td>' + users[i].phone + '</td>';
-                htmlContent += '<td>' +
-                    '<a href="/edit.html?id=' + users[i].id + '" class="text-info"><i class="fa fa-edit"></i> Chỉnh sửa</a> | ' +
-                    '<a href="javascript:void(0)" class="text-danger" onclick="deleteUser(' + users[i].id + ', this)"><i class="fa fa-trash-alt"></i> Xóa</a>' +
-                    '</td>';
-                htmlContent += '</tr>';
-            }
+        //     for (let i = 0; i < users.length; i++) {
+        //         htmlContent += '<tr>';
+        //         htmlContent += '<td>' + users[i].name + '</td>';
+        //         htmlContent += '<td>' + (users[i].birthYear || 'Chưa biết') + '</td>';
+        //         htmlContent += '<td>' + users[i].email + '</td>';
+        //         htmlContent += '<td>' + users[i].phone + '</td>';
+        //         htmlContent += '<td>' +
+        //             '<a href="/edit.html?id=' + users[i].id + '" class="text-info"><i class="fa fa-edit"></i> Chỉnh sửa</a> | ' +
+        //             '<a href="javascript:void(0)" class="text-danger" onclick="deleteUser(' + users[i].id + ', this)"><i class="fa fa-trash-alt"></i> Xóa</a>' +
+        //             '</td>';
+        //         htmlContent += '</tr>';
+        //     }
 
-            $('table tbody').html(htmlContent);
-        }
+        //     $('table tbody').html(htmlContent);
+        // }
 
-        function deleteUser(id, aElement) {
-            const result = confirm('Bạn có chắc chắn muốn xóa học viên này?');
-            if (result) {
-                deleteUserAPI(id, function () {
-                    const tdElement = $(aElement).parent();
-                    const trElement = tdElement.parent();
-                    trElement.remove();
-                })
-            }
-        }
+        // function deleteUser(id, aElement) {
+        //     const result = confirm('Bạn có chắc chắn muốn xóa học viên này?');
+        //     if (result) {
+        //         deleteUserAPI(id, function () {
+        //             const tdElement = $(aElement).parent();
+        //             const trElement = tdElement.parent();
+        //             trElement.remove();
+        //         })
+        //     }
+        // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        function loadDoc() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    let data = JSON.parse(this.responseText);
+
+                    // $(".name").text(JSON.parse(this.responseText)[0].name);
+
+                    for(let i = 0; i < data.length; i++){
+                        $("tbody").append(
+                        `<tr>
+                            <td>${data[i].name}</td>
+                            <td>${data[i].birthday}</td>
+                            <td>${data[i].email}</td>
+                            <td>${data[i].phone}</td>
+                            <td>
+                            <a href="#"><i class="fa fa-edit"></i> Chỉnh sửa</a>
+                            <a href="#"><i class="fa fa-trash-alt"></i> Xóa</a>
+                        </td>`
+                        );
+                    };
+
+                };
+            };
+            xhttp.open("GET", "http://localhost:3000/users", true);
+            xhttp.send();
+            };
+
+            loadDoc();
     </script>
 </body>
 
