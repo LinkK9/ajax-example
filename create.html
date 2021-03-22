@@ -57,7 +57,7 @@
                 <i class="fa fa-chevron-left"></i> Quay lại
             </button>
 
-            <button class="btn btn-success" onclick="createUser()">
+            <button class="btn btn-success" id="add-user">
                 <i class="fa fa-save"></i> Lưu
             </button>
         </div>
@@ -71,23 +71,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-    <script src='/js/api.js'></script>
-    <script src='/js/validate.js'></script>
-
-    <script>
-        function createUser() {
-            if (isValidData()) {
-                const user = {
-                    name: $('#name').val(),
-                    birthYear: $('#birthYear').val(),
-                    email: $('#email').val(),
-                    phone: $('#phone').val()
-                }
-
-                createUserAPI(user, '/');
-            }
-        }
-    </script>
+    <script src='/js/main.js'></script>
 </body>
 
 </html>

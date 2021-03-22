@@ -59,7 +59,7 @@
                 <i class="fa fa-chevron-left"></i> Quay lại
             </button>
 
-            <button id="btn-save" class="btn btn-success" onclick="updateUser()">
+            <button id="btn-save" class="btn btn-success" ">
                 <i class="fa fa-save"></i> Lưu
             </button>
         </div>
@@ -73,48 +73,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-    <script src='/js/api.js'></script>
-    <script src='/js/validate.js'></script>
+    <script src='/js/main.js'></script>
 
-    <script>
-        const userId = getIdQueryParam();
-
-        $(function () {
-            renderContent()
-        })
-
-        function getIdQueryParam() {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('id');
-        }
-
-        function renderContent() {
-            getUserByIdAPI(userId, function (user) {
-                if (user) {
-                    $('#name').val(user.name);
-                    $('#birthYear').val(user.birthYear);
-                    $('#email').val(user.email);
-                    $('#phone').val(user.phone);
-                } else {
-                    $('#form').html('Học viên không tồn tại!');
-                    $('#btn-save').hide();
-                }
-            })
-        }
-
-        function updateUser() {
-            if (isValidData()) {
-                const userInfo = {
-                    name: $('#name').val(),
-                    birthYear: $('#birthYear').val(),
-                    email: $('#email').val(),
-                    phone: $('#phone').val()
-                }
-
-                updateUserAPI(userId, userInfo, '/');
-            }
-        }
-    </script>
 </body>
 
 </html>
