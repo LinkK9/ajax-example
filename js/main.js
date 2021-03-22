@@ -18,19 +18,17 @@ $(document).ready(function () {
     let searchParams = new URLSearchParams(window.location.search);
     let userId = searchParams.get("id");
     console.log(userId);
-    $("#btn-save").click(function () {
-      $.ajax({
-        method: "PUT",
-        url: "/users" + "/" + userId,
-        data: {
-          name: $("#name").val(),
-          birthday: $("#birthYear").val(),
-          email: $("#email").val(),
-          phone: $("#phone").val(),
-        },
-      }).done(function () {
-        window.location.href = "/";
-      });
+    $.ajax({
+      method: "PUT",
+      url: "/users" + "/" + userId,
+      data: {
+        name: $("#name").val(),
+        birthday: $("#birthYear").val(),
+        email: $("#email").val(),
+        phone: $("#phone").val(),
+      },
+    }).done(function () {
+      window.location.href = "/";
     });
   });
 });
