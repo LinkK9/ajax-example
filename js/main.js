@@ -34,7 +34,7 @@ $(document).ready(function () {
 
   $(".delete-row").on("click", function () {
     let delId = $(this).attr("rowid");
-    console.log("press in id:" + delId);
+    console.log("press on id:" + delId);
     $(this).parent().parent().remove();
     $.ajax({
       method: "DELETE",
@@ -47,6 +47,29 @@ $(document).ready(function () {
   });
 });
 
+// // multi delete
+// $("#del-button").on("click", function () {
+//   let checkedArr = [];
+//   let checkGroup = $(".check-del");
+//   for (let i = 0; i < checkGroup.length; i++) {
+//     if ($($("check-del")[i]).is(":checked")) {
+//       checkedArr.push($($("check-del")[i].attr("name")));
+//     }
+//   }
 
-
-// Xoa phan tu theo id
+//   if(checkedArr.length > 0){
+//     $("#multi-del").on("click", function(){
+//       for(let i = 0; i < checkedArr.length; i++){
+//         $("a[rowid = " + checkedArr[i] + "]").parent().parent().remove();
+//         $.ajax({
+//           method: "DELETE",
+//           url: "https://linhtrinhviet.herokuapp.com/users" + "/" + checkedArr[i],
+//         }).done(function () {
+//           console.log("deleted user's id: " + checkedArr[i]);
+//         });
+//       }
+//     })
+//   }else{
+//     $(".modal").css("display", "none");
+//   }
+// });

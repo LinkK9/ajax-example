@@ -2,12 +2,12 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
-        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous" />
 
     <title>Danh sách học viên</title>
 </head>
@@ -32,35 +32,36 @@
                     </tr>
                 </thead>
 
-                <tbody>
-
-                </tbody>
-
+                <tbody></tbody>
             </table>
-            <button type="button" class="btn btn-danger float-right" data-toggle="modal" data-target="#alertModal">
+            <button type="button" id="del-button" class="btn btn-danger float-right" data-toggle="modal"
+                data-target="#alertModal">
                 Xóa học viên
             </button>
 
-
-            <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal fade" id="alertModal" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLongTitle">Bạn có muốn xóa học viên ?</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">
+                                Bạn có muốn xóa học viên ?
+                            </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <button type="button" id="multi-del" class="btn btn-danger">
+                                Xóa đi!!!
+                            </button>
+                            <button type="button" class="btn btn-success" data-dismiss="modal">
+                                Khồng!
+                            </button>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <button type="button" id="multi-del" class="btn btn-danger">Xóa đi!!!</button>
-                        <button type="button" class="btn btn-success" data-dismiss="modal">Khồng!</button>
-                    </div>
-                  </div>
                 </div>
-              </div>
-
-              
-
+            </div>
         </div>
     </div>
 
@@ -74,11 +75,13 @@
         crossorigin="anonymous"></script>
     <script>
         function loadDoc() {
-            $.get("https://linhtrinhviet.herokuapp.com/users", function (data, status) {
-                console.log("Status: " + status);
-                for (let i = 0; i < data.length; i++) {
-                    $("tbody").append(
-                        `<tr>
+            $.get(
+                "https://linhtrinhviet.herokuapp.com/users",
+                function (data, status) {
+                    console.log("Status: " + status);
+                    for (let i = 0; i < data.length; i++) {
+                        $("tbody").append(
+                            `<tr>
                             <td>${data[i].name}</td>
                             <td>${data[i].birthday}</td>
                             <td>${data[i].email}</td>
@@ -89,30 +92,60 @@
                             <input type="checkbox" class="check-del" name=${data[i].id}>
                             </td>
                         </tr>`
-                    );
+                        );
+                    }
+
+                    $(".delete-row").on("click", function () {
+                        let delId = $(this).attr("rowid");
+                        console.log("press in id:" + delId);
+                        $(this).parent().parent().remove();
+                        $.ajax({
+                            method: "DELETE",
+                            url: "https://linhtrinhviet.herokuapp.com/users" + "/" + delId,
+                        }).done(function () {
+                            console.log("deleted user's id: " + delId);
+                        });
+                    });
+                }
+            );
+
+            $("#del-button").on("click", function () {
+                let checkedArr = [];
+                let checkGroup = $(".check-del");
+                for (let i = 0; i < checkGroup.length; i++) {
+                    if ($($("check-del")[i]).is(":checked")) {
+                        checkedArr.push($($("check-del")[i].attr("name")));
+                        console.log($($("check-del")[i].attr("name")));
+                    }
                 }
 
-                $(".delete-row").on("click", function () {
-                    let delId = $(this).attr("rowid");
-                    console.log("press in id:" + delId);
-                    $(this).parent().parent().remove();
-                    $.ajax({
-                        method: "DELETE",
-                        url: "https://linhtrinhviet.herokuapp.com/users" + "/" + delId,
-                    }).done(function () {
-                        console.log("deleted user's id: " + delId);
+                if (checkedArr.length > 0) {
+                    $("#multi-del").on("click", function () {
+                        for (let i = 0; i < checkedArr.length; i++) {
+                            $("a[rowid = " + checkedArr[i] + "]")
+                                .parent()
+                                .parent()
+                                .remove();
+                            $.ajax({
+                                method: "DELETE",
+                                url:
+                                    "https://linhtrinhviet.herokuapp.com/users" +
+                                    "/" +
+                                    checkedArr[i],
+                            }).done(function () {
+                                console.log("deleted user's id: " + checkedArr[i]);
+                            });
+                        }
                     });
-                });
+                } else {
+                    $(".modal").css("display", "none");
+                }
             });
-
-
         }
 
         loadDoc();
     </script>
-    <script src='/js/main.js'></script>
-
-
+    <script src="/js/main.js"></script>
 
     <!-- <script>
 
