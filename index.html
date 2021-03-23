@@ -17,7 +17,7 @@
         <h1 class="text-center mt-4">Danh sách học viên</h1>
 
         <p>
-            <a href="/create.html" class="btn btn-success"><i class="fa fa-plus-circle"></i> Thêm học viên</a>
+            <a href="create.html" class="btn btn-success"><i class="fa fa-plus-circle"></i> Thêm học viên</a>
         </p>
 
         <div class="table-responsive">
@@ -33,18 +33,34 @@
                 </thead>
 
                 <tbody>
-                    <tr>
-                        <td class="name">trinh viet linh</td>
-                        <td>26/10/1992</td>
-                        <td>linhtrinhviet@gmail.com</td>
-                        <td>0369232329</td>
-                        <td>
-                            <a href="#"><i class="fa fa-edit"></i> Chỉnh sửa</a>
-                            <a href="#"><i class="fa fa-trash-alt"></i> Xóa</a>
-                        </td>
-                    </tr>
+
                 </tbody>
+
             </table>
+            <button type="button" class="btn btn-danger float-right" data-toggle="modal" data-target="#alertModal">
+                Xóa học viên
+            </button>
+
+
+            <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLongTitle">Bạn có muốn xóa học viên ?</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                        <button type="button" id="multi-del" class="btn btn-danger">Xóa đi!!!</button>
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Khồng!</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              
+
         </div>
     </div>
 
@@ -56,40 +72,82 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-    <script src='/js/main.js'></script>
-
     <script>
-
         function loadDoc() {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    let data = JSON.parse(this.responseText);
-
-                    // $(".name").text(JSON.parse(this.responseText)[0].name);
-
-                    for(let i = 0; i < data.length; i++){
-                        $("tbody").append(
+            $.get("https://linhtrinhviet.herokuapp.com/users", function (data, status) {
+                console.log("Status: " + status);
+                for (let i = 0; i < data.length; i++) {
+                    $("tbody").append(
                         `<tr>
                             <td>${data[i].name}</td>
                             <td>${data[i].birthday}</td>
                             <td>${data[i].email}</td>
                             <td>${data[i].phone}</td>
                             <td>
-                            <a href="/edit.html?id=${data[i].id}"><i class="fa fa-edit"></i> Chỉnh sửa</a>
-                            <a href="#"><i class="fa fa-trash-alt"></i> Xóa</a>
-                        </td>`
+                            <a href="edit.html?id=${data[i].id}" class="mr-3"><i class="fa fa-edit"></i> Chỉnh sửa</a>
+                            <a rowid="${data[i].id}" class="text-danger delete-row mr-5"><i class="fa fa-trash-alt"></i> Xóa</a>
+                            <input type="checkbox" class="check-del" name=${data[i].id}>
+                            </td>
+                        </tr>`
+                    );
+                }
+
+                $(".delete-row").on("click", function () {
+                    let delId = $(this).attr("rowid");
+                    console.log("press in id:" + delId);
+                    $(this).parent().parent().remove();
+                    $.ajax({
+                        method: "DELETE",
+                        url: "https://linhtrinhviet.herokuapp.com/users" + "/" + delId,
+                    }).done(function () {
+                        console.log("deleted user's id: " + delId);
+                    });
+                });
+            });
+
+
+        }
+
+        loadDoc();
+    </script>
+    <script src='/js/main.js'></script>
+
+
+
+    <!-- <script>
+
+        function loadDoc() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    let data = JSON.parse(this.responseText);
+
+                    // $(".name").text(JSON.parse(this.responseText)[0].name);
+
+                    for (let i = 0; i < data.length; i++) {
+                        $("tbody").append(
+                            `<tr>
+                            <td>${data[i].name}</td>
+                            <td>${data[i].birthday}</td>
+                            <td>${data[i].email}</td>
+                            <td>${data[i].phone}</td>
+                            <td>
+                            <a href="edit.html?id=${data[i].id}"><i class="fa fa-edit"></i> Chỉnh sửa</a>
+                            <a rowid="${data[i].id}" class="text-danger delete-row"><i class="fa fa-trash-alt"></i> Xóa</a>
+                            </td>
+                            </tr>`
                         );
                     };
 
                 };
             };
-            xhttp.open("GET", "http://localhost:3000/users", true);
+            xhttp.open("GET", "https://linhtrinhviet.herokuapp.com/users", true);
             xhttp.send();
-            };
+        };
+        loadDoc();
 
-            loadDoc();
-    </script>
+        
+    </script> -->
 </body>
 
 </html>

@@ -1,7 +1,7 @@
 $(document).ready(function () {
   $("#add-user").on("click", function () {
     $.post(
-      "http://localhost:3000/users",
+      "https://linhtrinhviet.herokuapp.com/users",
       {
         name: $("#name").val(),
         birthday: $("#birthYear").val(),
@@ -17,10 +17,10 @@ $(document).ready(function () {
   $("#btn-save").on("click", function () {
     let searchParams = new URLSearchParams(window.location.search);
     let userId = searchParams.get("id");
-    console.log(userId);
+
     $.ajax({
       method: "PUT",
-      url: "/users" + "/" + userId,
+      url: "https://linhtrinhviet.herokuapp.com/users" + "/" + userId,
       data: {
         name: $("#name").val(),
         birthday: $("#birthYear").val(),
@@ -31,4 +31,22 @@ $(document).ready(function () {
       window.location.href = "/";
     });
   });
+
+  $(".delete-row").on("click", function () {
+    let delId = $(this).attr("rowid");
+    console.log("press in id:" + delId);
+    $(this).parent().parent().remove();
+    $.ajax({
+      method: "DELETE",
+      url: "https://linhtrinhviet.herokuapp.com/users" + "/" + delId,
+    }).done(function () {
+      console.log("deleted user's id: " + delId);
+    });
+
+    // loadDoc();
+  });
 });
+
+
+
+// Xoa phan tu theo id

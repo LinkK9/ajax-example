@@ -60,7 +60,7 @@
             </button>
 
             <button id="btn-save" class="btn btn-success" ">
-                <i class="fa fa-save"></i> Lưu
+                <i class=" fa fa-save"></i> Lưu
             </button>
         </div>
     </div>
@@ -74,6 +74,19 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
     <script src='/js/main.js'></script>
+
+    <script>
+        function getUserById(id) {
+            $.get("https://linhtrinhviet.herokuapp.com/users" + "/" + id, function (data, status) {
+                $("#name").val(data.name);
+                $("#birthYear").val(data.birthday);
+                $("#email").val(data.email);
+                $("#phone").val(data.phone);
+            });
+        };
+        let userId = new URLSearchParams(window.location.search).get("id");
+         getUserById(userId);
+    </script>
 
 </body>
 
