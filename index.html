@@ -52,10 +52,10 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <button type="button" id="multi-del" class="btn btn-danger">
+                            <button type="button" id="multi-del" class="btn btn-danger" data-dismiss="modal">
                                 Xóa đi!!!
                             </button>
-                            <button type="button" class="btn btn-success" data-dismiss="modal">
+                            <button type="button" class="btn btn-success nope" data-dismiss="modal">
                                 Khồng!
                             </button>
                         </div>
@@ -113,19 +113,21 @@
                 let checkedArr = [];
                 let checkGroup = $(".check-del");
                 for (let i = 0; i < checkGroup.length; i++) {
-                    if ($($("check-del")[i]).is(":checked")) {
-                        checkedArr.push($($("check-del")[i].attr("name")));
-                        console.log($($("check-del")[i].attr("name")));
+                    if ($(checkGroup[i]).is(":checked")) {
+                        checkedArr.push($(checkGroup[i]).attr("name"));
+                        console.log($(checkGroup[i]).attr("name"));
                     }
                 }
-
+                
                 if (checkedArr.length > 0) {
+                    $(".modal-title").text("Bạn muốn xóa " + checkedArr.length + " học viên?");
                     $("#multi-del").on("click", function () {
                         for (let i = 0; i < checkedArr.length; i++) {
                             $("a[rowid = " + checkedArr[i] + "]")
                                 .parent()
                                 .parent()
                                 .remove();
+                            
                             $.ajax({
                                 method: "DELETE",
                                 url:
@@ -138,7 +140,9 @@
                         }
                     });
                 } else {
-                    $(".modal").css("display", "none");
+                    $("#multi-del").css("display", "none");
+                    $(".nope").text("OK!");
+                    $(".modal-title").text("Bạn cần tick chọn học viên muốn xoá trên danh sách!");
                 }
             });
         }
