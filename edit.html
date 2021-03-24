@@ -73,7 +73,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-    <script src='/js/main.js'></script>
+    <!-- <script src='/js/main.js'></script> -->
 
     <script>
         function getUserById(id) {
@@ -85,7 +85,40 @@
             });
         };
         let userId = new URLSearchParams(window.location.search).get("id");
-         getUserById(userId);
+        getUserById(userId);
+
+        $("#add-user").on("click", function () {
+            $.post(
+                "https://linhtrinhviet.herokuapp.com/users",
+                {
+                    name: $("#name").val(),
+                    birthday: $("#birthYear").val(),
+                    email: $("#email").val(),
+                    phone: $("#phone").val(),
+                },
+                function () {
+                    window.location.href = "index.html";
+                }
+            );
+        });
+
+        $("#btn-save").on("click", function () {
+            let searchParams = new URLSearchParams(window.location.search);
+            let userId = searchParams.get("id");
+
+            $.ajax({
+                method: "PUT",
+                url: "https://linhtrinhviet.herokuapp.com/users" + "/" + userId,
+                data: {
+                    name: $("#name").val(),
+                    birthday: $("#birthYear").val(),
+                    email: $("#email").val(),
+                    phone: $("#phone").val(),
+                },
+            }).done(function () {
+                window.location.href = "index.html";
+            });
+        });
     </script>
 
 </body>
