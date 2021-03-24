@@ -9,7 +9,7 @@ $(document).ready(function () {
         phone: $("#phone").val(),
       },
       function () {
-        window.location.href = "/";
+        window.location.href = "index.html";
       }
     );
   });
@@ -28,7 +28,7 @@ $(document).ready(function () {
         phone: $("#phone").val(),
       },
     }).done(function () {
-      window.location.href = "/";
+      window.location.href = "index.html";
     });
   });
 
