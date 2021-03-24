@@ -90,7 +90,7 @@
                                 <td>
                                     <a href="edit.html?id=${data[i].id}" class="mr-3"><i class="fa fa-edit"></i> Chỉnh sửa</a>
                                     <a rowid="${data[i].id}" class="text-danger delete-row mr-5" data-toggle="modal"
-                        data-target="#alertModal" ><i class="fa fa-trash-alt"></i> Xóa</a>
+                                        data-target="#alertModal" ><i class="fa fa-trash-alt"></i> Xóa</a>
                                     <input type="checkbox" class="check-del" name=${data[i].id}>
                                 </td>
                         </tr>`
@@ -98,22 +98,10 @@
                     }
 
                     $(".delete-row").css("cursor", "pointer");
-                    // $(".delete-row").on("click", function () {
-                    //     let delId = $(this).attr("rowid");
-                    //     console.log("press in id:" + delId);
-                    //     $(this).parent().parent().remove();
-                    //     $.ajax({
-                    //         method: "DELETE",
-                    //         url: "https://linhtrinhviet.herokuapp.com/users" + "/" + delId,
-                    //     }).done(function () {
-                    //         console.log("deleted user's id: " + delId);
-                    //     });
-                    // });
-
                     $(".delete-row").on("click", function () {
                         let delId = $(this).attr("rowid");
                         let name = $(this).parent().prev().prev().prev().prev().text();
-                        $(".modal-title").text("Bạn có muốn xóa học viên "+ name + "?");
+                        $(".modal-title").text("Bạn có muốn xóa học viên " + name + "?");
                         $("#multi-del").on("click", function () {
                             $(".delete-row[rowid=" + delId + "]").parent().parent().remove();
                             $.ajax({
@@ -172,40 +160,6 @@
     </script>
     <script src="/js/main.js"></script>
 
-    <!-- <script>
-
-        function loadDoc() {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    let data = JSON.parse(this.responseText);
-
-                    // $(".name").text(JSON.parse(this.responseText)[0].name);
-
-                    for (let i = 0; i < data.length; i++) {
-                        $("tbody").append(
-                            `<tr>
-                            <td>${data[i].name}</td>
-                            <td>${data[i].birthday}</td>
-                            <td>${data[i].email}</td>
-                            <td>${data[i].phone}</td>
-                            <td>
-                            <a href="edit.html?id=${data[i].id}"><i class="fa fa-edit"></i> Chỉnh sửa</a>
-                            <a rowid="${data[i].id}" class="text-danger delete-row"><i class="fa fa-trash-alt"></i> Xóa</a>
-                            </td>
-                            </tr>`
-                        );
-                    };
-
-                };
-            };
-            xhttp.open("GET", "https://linhtrinhviet.herokuapp.com/users", true);
-            xhttp.send();
-        };
-        loadDoc();
-
-        
-    </script> -->
 </body>
 
 </html>
