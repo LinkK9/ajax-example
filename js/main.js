@@ -1,20 +1,15 @@
-// check All
-$(".check-all").change(function () {
-  let checkGroup = $(".check-del");
+// Global var
+const API = "https://linhtrinhviet.herokuapp.com/";
+const API_USERS = API + "users";
+let page = "1";
+let limit = "10";
+let sortType = "id";
+let orderType = "desc";
 
-  if(this.checked){
-      console.log("yes");
-    for (let i = 0; i < checkGroup.length; i++) {
-        if (!$(checkGroup[i]).is(":checked")) {
-          $(checkGroup[i]).attr("checked")
-        }
-      };
-  }else{
-    for (let i = 0; i < checkGroup.length; i++) {
-        if ($(checkGroup[i]).is(":checked")) {
-          $(checkGroup[i]).removeAttr("checked")
-        }
-      };
-  }
-  
+
+// tickcheck
+$(".check-all").click(function () {
+  $("input:checkbox").prop("checked", this.checked);
 });
+
+

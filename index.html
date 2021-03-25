@@ -19,7 +19,7 @@
         <p class="d-inline-block">
             <a href="create.html" class="btn btn-success"><i class="fa fa-plus-circle"></i> Thêm học viên</a>
         </p>
-        <button type="button" id="del-button" class="btn btn-danger d-inline-block float-right" data-toggle="modal"
+        <button type="button" id="del-button" class="btn btn-danger d-inline-block ml-2" data-toggle="modal"
             data-target="#alertModal"><i class="fa fa-minus-circle"></i>
             Xóa học viên
         </button>
@@ -66,6 +66,20 @@
                 </div>
             </div>
         </div>
+
+        <div class="pages-switch">
+            <nav class="justify-content-center d-flex">
+              <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="#"><span aria-hidden="true">&laquo;</span></a></li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#"><span aria-hidden="true">&raquo;</span></a></li>
+                <li class="page-item"><a class="page-link" href="#">Trang cuối</a></li>
+              </ul>
+            </nav>
+          </div>
+
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"
@@ -76,11 +90,13 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+    
+    <script src="js/main.js"></script>
     <script>
-
+         
         function loadDoc() {
             $.get(
-                "https://linhtrinhviet.herokuapp.com/users",
+                API_USERS + `?_page=${page}&_limit=${limit}&_sort=${sortType}&_order=${orderType} ` ,
                 function (data, status) {
                     console.log("Status: " + status);
                     for (let i = 0; i < data.length; i++) {
@@ -101,27 +117,8 @@
                                 </td>
                         </tr>`
                         );
-                    }
+                    };
 
-                    $(".check-all").change(function () {
-                        let checkGroup = $(".check-del");
-
-                        if (this.checked) {
-                            console.log("yes");
-                            for (let i = 0; i < checkGroup.length; i++) {
-                                if (!$(checkGroup[i]).is(":checked")) {
-                                    $(checkGroup[i]).checked;
-                                };
-                            };
-                        } else {
-                            for (let i = 0; i < checkGroup.length; i++) {
-                                if ($(checkGroup[i]).is(":checked")) {
-                                    $(checkGroup[i]).removeAttr("checked")
-                                }
-                            };
-                        }
-
-                    });
 
                     $(".delete-row").css("cursor", "pointer");
                     $(".delete-row").on("click", function () {
@@ -183,7 +180,7 @@
 
         loadDoc();
     </script>
-    <script src="js/main.js"></script>
+    
 
 </body>
 
