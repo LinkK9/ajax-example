@@ -8,7 +8,7 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
         integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous" />
-
+    <link rel="stylesheet" href="style/style.css">
     <title>Danh sách học viên</title>
 </head>
 
@@ -23,6 +23,10 @@
             data-target="#alertModal"><i class="fa fa-minus-circle"></i>
             Xóa học viên
         </button>
+        <div class="d-inline-block">
+            <!-- <input type="text" name="search" class="form-control-sm d-inline-block pt-1" id=""> -->
+        </div>
+        
         <div class="table-responsive">
             <table class="table table-striped table-hover">
                 <thead class="thead-dark">
@@ -70,12 +74,12 @@
         <div class="pages-switch">
             <nav class="justify-content-center d-flex">
               <ul class="pagination">
-                <li class="page-item"><a class="page-link" href="#"><span aria-hidden="true">&laquo;</span></a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#"><span aria-hidden="true">&raquo;</span></a></li>
-                <li class="page-item"><a class="page-link" href="#">Trang cuối</a></li>
+                <li class="page-item"><a id="prev-page" class="page-link" href="#"><span aria-hidden="true">&laquo;</span></a></li>
+                <li class="page-item"><a id="page-st" class="page-link" href="#">1</a></li>
+                <li class="page-item"><a id="page-nd" class="page-link" href="#">2</a></li>
+                <li class="page-item"><a id="page-rd" class="page-link" href="#">3</a></li>
+                <li class="page-item"><a id="next-page" class="page-link" href="#"><span aria-hidden="true">&raquo;</span></a></li>
+                <li class="page-item"><a id="last-page" class="page-link" href="#">Trang cuối</a></li>
               </ul>
             </nav>
           </div>
@@ -119,6 +123,8 @@
                         );
                     };
 
+                    $(".pagination").children().removeClass("click-on");
+                    $("#page-st").addClass("click-on");
 
                     $(".delete-row").css("cursor", "pointer");
                     $(".delete-row").on("click", function () {

@@ -7,6 +7,7 @@ let sortType = "id";
 let orderType = "desc";
 
 
+
 // tickcheck
 $(".check-all").click(function () {
   $("input:checkbox").prop("checked", this.checked);
