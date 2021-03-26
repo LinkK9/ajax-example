@@ -26,7 +26,7 @@
         <div class="d-inline-block">
             <!-- <input type="text" name="search" class="form-control-sm d-inline-block pt-1" id=""> -->
         </div>
-        
+
         <div class="table-responsive">
             <table class="table table-striped table-hover">
                 <thead class="thead-dark">
@@ -42,7 +42,13 @@
                     </tr>
                 </thead>
 
-                <tbody></tbody>
+                <tbody>
+                    <td colspan="5" id="loading" class="text-center">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </td>
+                </tbody>
             </table>
 
 
@@ -73,16 +79,19 @@
 
         <div class="pages-switch">
             <nav class="justify-content-center d-flex">
-              <ul class="pagination">
-                <li class="page-item"><a id="prev-page" class="page-link" href="#"><span aria-hidden="true">&laquo;</span></a></li>
-                <li class="page-item"><a id="page-st" class="page-link" href="#">1</a></li>
-                <li class="page-item"><a id="page-nd" class="page-link" href="#">2</a></li>
-                <li class="page-item"><a id="page-rd" class="page-link" href="#">3</a></li>
-                <li class="page-item"><a id="next-page" class="page-link" href="#"><span aria-hidden="true">&raquo;</span></a></li>
-                <li class="page-item"><a id="last-page" class="page-link" href="#">Trang cuối</a></li>
-              </ul>
+                <ul class="pagination">
+                    <li class="page-item"><a id="first-page" class="page-link" href="#">Trang đầu</a></li>
+                    <li class="page-item"><a id="prev-page" class="page-link" href="#"><span
+                                aria-hidden="true">&laquo;</span></a></li>
+                    <!-- <li class="page-item"><a id="page-st" class="page-link page-numbers" href="#">1</a></li>
+                <li class="page-item"><a id="page-nd" class="page-link page-numbers" href="#">2</a></li>
+                <li class="page-item"><a id="page-rd" class="page-link page-numbers" href="#">3</a></li> -->
+                    <li class="page-item"><a id="next-page" class="page-link" href="#"><span
+                                aria-hidden="true">&raquo;</span></a></li>
+                    <li class="page-item"><a id="last-page" class="page-link" href="#">Trang cuối</a></li>
+                </ul>
             </nav>
-          </div>
+        </div>
 
     </div>
 
@@ -94,14 +103,16 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-    
+
     <script src="js/main.js"></script>
     <script>
-         
-        function loadDoc() {
+
+        function loadDoc(_page, _limit, _sortType, _orderType) {
+            // Get data
             $.get(
-                API_USERS + `?_page=${page}&_limit=${limit}&_sort=${sortType}&_order=${orderType} ` ,
+                API_USERS + `?_page=${_page}&_limit=${_limit}&_sort=${_sortType}&_order=${_orderType} `,
                 function (data, status) {
+                    $("#loading").hide();
                     console.log("Status: " + status);
                     for (let i = 0; i < data.length; i++) {
                         $("tbody").append(
@@ -123,9 +134,7 @@
                         );
                     };
 
-                    $(".pagination").children().removeClass("click-on");
-                    $("#page-st").addClass("click-on");
-
+                    // Delete a row
                     $(".delete-row").css("cursor", "pointer");
                     $(".delete-row").on("click", function () {
                         let delId = $(this).attr("rowid");
@@ -143,14 +152,14 @@
                     });
                 }
             );
-
+            // Delete with input checked
             $("#del-button").on("click", function () {
                 let checkedArr = [];
                 let checkGroup = $(".check-del");
                 for (let i = 0; i < checkGroup.length; i++) {
                     if ($(checkGroup[i]).is(":checked")) {
                         checkedArr.push($(checkGroup[i]).attr("name"));
-                        console.log($(checkGroup[i]).attr("name"));
+                        // console.log($(checkGroup[i]).attr("name"));
                     }
                 }
 
@@ -183,10 +192,192 @@
                 }
             });
         }
+        loadDoc(page, limit, sortType, orderType);
 
-        loadDoc();
+        // pagination
+        let totalRow = 0;
+        let totalPages = 0;
+        let pageNumber = 1;
+        $.get(
+            API_USERS,
+            function (data, status) {
+                console.log("get all data status: " + status);
+                totalRow = data.length;
+                console.log("total row: " + totalRow);
+
+                if (totalRow % limit === 0) {
+                    totalPages = totalRow / limit;
+                } else {
+                    totalPages = Math.floor(totalRow / limit) + 1;
+                }
+                console.log("so trang la: " + totalPages);
+
+                if (totalPages > 5) {
+                    for (let i = 1; i <= 5; i++) {
+                        $("#next-page").parent().before(`<li class="page-item"><a class="page-link page-numbers" href="#">${i}</a></li>`);
+                    };
+                } else {
+                    for (let i = 1; i < totalPages; i++) {
+                        $("#next-page").parent().before(`<li class="page-item"><a class="page-link page-numbers" href="#">${i}</a></li>`);
+                    };
+                };
+
+                $(".pagination").children().removeClass("click-on");
+                $("#prev-page").parent().next().children().addClass("click-on");
+                $(".page-numbers").click(function () {
+                    $(".page-link").removeClass("click-on");
+                    $(this).addClass("click-on");
+                    pageNumber = $(this).text();
+                    $("tbody").children().remove();
+                    $("tbody").append(
+                        `<td colspan="5" id="loading" class="text-center">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </td>`);
+                    loadDoc(pageNumber, limit, sortType, orderType);
+                });
+                $("#prev-page").click(function () {
+                    if ($(this).parent().next().find(".page-numbers").text() !== "1") {
+                        let pageNumbers = $(".page-numbers");
+                        for (let i = 0; i < pageNumbers.length; i++) {
+                            let thisNumber = $(pageNumbers[i]).text();
+                            $(pageNumbers[i]).text(+thisNumber - 1);
+                        };
+                    }
+                    let thisClick = +$(".click-on").text();
+                    let thisIndex = 0;
+                    if (thisClick === 5) {
+                        thisIndex = 4;
+                    } else {
+                        thisIndex = Math.floor(thisClick / 5) + thisClick % 5 - 1;
+                    };
+                    if (thisClick > 1 && thisClick <= 5) {
+                        let pageNumbers = $(".page-numbers");
+                        $(".page-link").removeClass("click-on");
+                        $(pageNumbers[thisIndex - 1]).addClass("click-on");
+                    };
+                    pageNumber = $(".click-on").text();
+                    $("tbody").children().remove();
+                    $("tbody").append(
+                        `<td colspan="5" id="loading" class="text-center">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </td>`);
+                    loadDoc(pageNumber, limit, sortType, orderType);
+                });
+                $("#next-page").click(function () {
+                    if (+$(this).parent().prev().find(".page-numbers").text() !== totalPages) {
+                        let pageNumbers = $(".page-numbers");
+                        for (let i = 0; i < pageNumbers.length; i++) {
+                            let thisNumber = $(pageNumbers[i]).text();
+                            $(pageNumbers[i]).text(+thisNumber + 1);
+                        };
+
+
+                        let thisClick = +$(".click-on").text();
+                        let thisIndex = 0;
+                        if (thisClick === 5) {
+                            thisIndex = 4;
+                        } else {
+                            thisIndex = Math.floor(thisClick / 5) + thisClick % 5 - 1;
+                        };
+                        if (thisClick > totalPages - 4 && thisClick <= totalPages) {
+                            let pageNumbers = $(".page-numbers");
+                            $(".page-link").removeClass("click-on");
+                            $(pageNumbers[thisIndex + 1]).addClass("click-on");
+                        };
+
+                        pageNumber = $(".click-on").text();
+                        $("tbody").children().remove();
+                        $("tbody").append(
+                            `<td colspan="5" id="loading" class="text-center">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </td>`);
+                        loadDoc(pageNumber, limit, sortType, orderType);
+                    };
+                });
+                $("#last-page").click(function () {
+
+                    $(".page-numbers").remove();
+                    if (totalPages > 5) {
+                        for (let i = totalPages - 4; i <= totalPages; i++) {
+                            $("#next-page").parent().before(`<li class="page-item"><a class="page-link page-numbers" href="#">${i}</a></li>`);
+                        };
+                    } else {
+                        for (let i = 1; i < totalPages; i++) {
+                            $("#next-page").parent().before(`<li class="page-item"><a class="page-link page-numbers" href="#">${i}</a></li>`);
+                        };
+                    };
+                    let pageNumbers = $(".page-numbers");
+                    $(pageNumbers[pageNumbers.length - 1]).addClass("click-on");
+                    pageNumber = $(".click-on").text();
+                    $("tbody").children().remove();
+                    $("tbody").append(
+                        `<td colspan="5" id="loading" class="text-center">
+                            <div class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </td>`);
+                    loadDoc(pageNumber, limit, sortType, orderType);
+                    $(".page-numbers").click(function () {
+                        $(".page-link").removeClass("click-on");
+                        $(this).addClass("click-on");
+                        pageNumber = $(this).text();
+                        $("tbody").children().remove();
+                        $("tbody").append(
+                            `<td colspan="5" id="loading" class="text-center">
+                                <div class="spinner-border" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </td>`);
+                        loadDoc(pageNumber, limit, sortType, orderType);
+                    });
+                });
+
+                $("#first-page").click(function () {
+                    $(".page-numbers").remove();
+                    if (totalPages > 5) {
+                        for (let i = 1; i <= 5; i++) {
+                            $("#next-page").parent().before(`<li class="page-item"><a class="page-link page-numbers" href="#">${i}</a></li>`);
+                        };
+                    } else {
+                        for (let i = 1; i < totalPages; i++) {
+                            $("#next-page").parent().before(`<li class="page-item"><a class="page-link page-numbers" href="#">${i}</a></li>`);
+                        };
+                    };
+                    let pageNumbers = $(".page-numbers");
+                    $(pageNumbers[0]).addClass("click-on");
+                    pageNumber = $(".click-on").text();
+                    $("tbody").children().remove();
+                    $("tbody").append(
+                        `<td colspan="5" id="loading" class="text-center">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </td>`);
+                    loadDoc(pageNumber, limit, sortType, orderType);
+                    $(".page-numbers").click(function () {
+                        $(".page-link").removeClass("click-on");
+                        $(this).addClass("click-on");
+                        pageNumber = $(this).text();
+                        $("tbody").children().remove();
+                        $("tbody").append(
+                            `<td colspan="5" id="loading" class="text-center">
+                            <div class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </td>`);
+                        loadDoc(pageNumber, limit, sortType, orderType);
+                    });
+                });
+            }
+        );
     </script>
-    
+
 
 </body>
 
