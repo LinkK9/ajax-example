@@ -139,7 +139,7 @@
                         let delId = $(this).attr("rowid");
                         let name = $(this).parent().prev().prev().prev().prev().text();
                         $(".modal-title").text("Bạn có muốn xóa học viên " + name + "?");
-                        $("#multi-del").on("click", function () {
+                        $("#multi-del").off("click").on("click", function () {
                             $(".delete-row[rowid=" + delId + "]").parent().parent().remove();
                             $.ajax({
                                 method: "DELETE",
@@ -148,6 +148,7 @@
                                 console.log("deleted user's id: " + delId);
                             });
                         });
+
                     });
                 }
             );
@@ -166,7 +167,7 @@
                     $(".modal-title").text("Bạn có muốn xóa " + checkedArr.length + " học viên?");
                     $("#multi-del").css("display", "inline-block");
                     $(".nope").text("Khồng!");
-                    $("#multi-del").on("click", function () {
+                    $("#multi-del").off("click").on("click", function () {
                         for (let i = 0; i < checkedArr.length; i++) {
                             $("a[rowid = " + checkedArr[i] + "]")
                                 .parent()
@@ -236,7 +237,7 @@
                     </td>`);
                     loadDoc(pageNumber, limit, sortType, orderType);
                 });
-                $("#prev-page").click(function () {
+                $("#prev-page").off("click").click(function () {
                     if (+$(this).parent().next().find(".page-numbers").text() > 1) {
                         let pageNumbers = $(".page-numbers");
                         for (let i = 0; i < pageNumbers.length; i++) {
@@ -274,7 +275,6 @@
                             $(pageNumbers[i]).text(+thisNumber + 1);
                         };
 
-
                         let thisClick = +$(".click-on").text();
                         let thisIndex = 0;
                         if (thisClick === 5) {
@@ -301,7 +301,7 @@
                 });
                 $("#last-page").click(function () {
 
-                    $(".page-numbers").remove();
+                    $(".page-numbers").parent().remove();
                     if (totalPages > 5) {
                         for (let i = totalPages - 4; i <= totalPages; i++) {
                             $("#next-page").parent().before(`<li class="page-item"><a class="page-link page-numbers" href="#">${i}</a></li>`);
@@ -338,7 +338,7 @@
                 });
 
                 $("#first-page").click(function () {
-                    $(".page-numbers").remove();
+                    $(".page-numbers").parent().remove();
                     if (totalPages > 5) {
                         for (let i = 1; i <= 5; i++) {
                             $("#next-page").parent().before(`<li class="page-item"><a class="page-link page-numbers" href="#">${i}</a></li>`);
