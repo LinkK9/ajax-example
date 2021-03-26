@@ -128,7 +128,6 @@
                                     <a href="edit.html?id=${data[i].id}"><i class="fa fa-edit"></i> Chỉnh sửa</a>
                                     <a rowid="${data[i].id}" class="text-danger delete-row float-right" data-toggle="modal"
                                         data-target="#alertModal" ><i class="fa fa-trash-alt"></i> Xóa</a>
-                                    
                                 </td>
                         </tr>`
                         );
@@ -238,7 +237,7 @@
                     loadDoc(pageNumber, limit, sortType, orderType);
                 });
                 $("#prev-page").click(function () {
-                    if ($(this).parent().next().find(".page-numbers").text() !== "1") {
+                    if (+$(this).parent().next().find(".page-numbers").text() > 1) {
                         let pageNumbers = $(".page-numbers");
                         for (let i = 0; i < pageNumbers.length; i++) {
                             let thisNumber = $(pageNumbers[i]).text();
