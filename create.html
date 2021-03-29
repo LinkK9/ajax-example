@@ -30,7 +30,7 @@
             <label for="birthYear" class="col-sm-2 col-form-label">Năm sinh</label>
 
             <div class="col-sm-10">
-                <input type="text" id="birthYear" class="form-control">
+                <input type="date" id="birthYear" class="form-control">
             </div>
         </div>
 
@@ -71,14 +71,14 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-    <!-- <script src='js/main.js'></script> -->
+    <script src='js/main.js'></script>
     <script>
         $("#add-user").on("click", function () {
             $.post(
                 "https://linhtrinhviet.herokuapp.com/users",
                 {
                     name: $("#name").val(),
-                    birthday: $("#birthYear").val(),
+                    birthday: revertDate($("#birthYear").val()),
                     email: $("#email").val(),
                     phone: $("#phone").val(),
                 },
