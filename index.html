@@ -9,20 +9,31 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
         integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous" />
     <link rel="stylesheet" href="style/style.css">
-    <title>Danh sách học viên</title>
+    <title>Danh sách Thành viên</title>
 </head>
 
 <body>
     <div class="container">
-        <h1 class="text-center mt-4">Danh sách học viên</h1>
+        <nav class="navbar navbar-light bg-light mb-3">
+            <a class="navbar-brand" href="#">
+                <h1 class="text-center mt-2">Danh sách Thành viên</h1>
+            </a>
+            <a id="log-in" class="icon-topbar btn btn-success" href="#" data-toggle="modal"
+                data-target="#loginModal" title="email: pass@admin.com; password: admin">Đăng Nhập</a>
+            <div class="loged text-right">
+                <h5 class="this-user text-primary font-size-2">Xin Chào abc</h5>
+                <a href="#" id="log-out" class="text-danger">Đăng xuất</a>
+            </div>
+        </nav>
+
 
         <div class="top-bar d-flex align-items-center justify-content-between mb-2">
             <div class="add-remove">
                 <button type="button" class="btn btn-success" onclick="location.href='create.html'"><i
-                        class="fa fa-plus-circle"></i> Thêm học viên</button>
-                <button type="button" id="del-button" class="btn btn-danger d-inline-block ml-2" data-toggle="modal"
-                    data-target="#alertModal"><i class="fa fa-minus-circle"></i>
-                    Xóa học viên
+                        class="fa fa-plus-circle"></i> Thêm Thành viên</button>
+                <button type="button" id="del-button" class="btn btn-danger d-inline-block ml-2"><i
+                        class="fa fa-minus-circle"></i>
+                    Xóa Thành viên
                 </button>
             </div>
 
@@ -86,7 +97,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLongTitle">
-                                Bạn có muốn xóa học viên ?
+                                Bạn có muốn xóa thành viên ?
                             </h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
@@ -107,7 +118,7 @@
 
         <div class="pages-switch">
             <nav class="justify-content-center d-flex">
-                <ul class="pagination">
+                <ul class="pagination ">
                     <li class="page-item"><a id="first-page" class="page-link" href="#">Trang đầu</a></li>
                     <li class="page-item"><a id="prev-page" class="page-link" href="#"><span
                                 aria-hidden="true">&laquo;</span></a></li>
@@ -121,30 +132,79 @@
             </nav>
         </div>
 
+        <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title text-success font-weight-bold" id="ModalLabel">Đăng nhập</h2>
+                    </div>
+                    <div class="modal-body">
+                        <div class="d-block"></div>
+                        <form>
+                            <div class="form-group">
+                                <label for="">Email của bạn</label>
+                                
+                                <input id="log-email" class="form-control" name="" placeholder="Email" type="email"
+                                    autofocus>
+                            </div>
+                            <div class="form-group">
+                                <label for=""> Mật khẩu của bạn</label>
+                                <input id="log-pass" class="form-control" placeholder="******" type="password">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <button id="log-button" class="btn btn-success btn-block" type="button"> Đăng
+                                            nhập
+                                        </button>
+                                    </div>
+                                    
+                                </div>
+                                <div id="wrong" class="text-danger font-weight-bold ml-2"> *Email hoặc mật khẩu của bạn không đúng! </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog aria-labelledby=" exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
-        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
+<script src="js/main.js"></script>
+<script>
 
-    <script src="js/main.js"></script>
-    <script>
-
-        function loadDoc(_page, _limit, _sortType, _orderType) {
-            // Get data
-            $.get(
-                API_USERS + `?_page=${_page}&_limit=${_limit}&_sort=${_sortType}&_order=${_orderType}&q=${searchContent} `,
-                function (data, status) {
-                    $("#loading").hide();
-                    console.log("Status: " + status);
-                    for (let i = 0; i < data.length; i++) {
-                        $("tbody").append(
-                            `<tr>
+    function loadDoc(_page, _limit, _sortType, _orderType) {
+        // Get data
+        $.get(
+            API_USERS + `?_page=${_page}&_limit=${_limit}&_sort=${_sortType}&_order=${_orderType}&q=${searchContent} `,
+            function (data, status, req) {
+                $("#loading").hide();
+                console.log("Status: " + status);
+                for (let i = 0; i < data.length; i++) {
+                    $("tbody").append(
+                        `<tr>
                                 <td>
                                     <input type="checkbox" class="check-del mr-3" name=${data[i].id}>
                                     ${data[i].name}
@@ -154,31 +214,34 @@
                                 <td>${data[i].phone}</td>
                                 <td>
                                     <a href="edit.html?id=${data[i].id}"><i class="fa fa-edit"></i> Chỉnh sửa</a>
-                                    <a rowid="${data[i].id}" class="text-danger delete-row float-right" data-toggle="modal"
-                                        data-target="#alertModal" ><i class="fa fa-trash-alt"></i> Xóa</a>
+                                    <a rowid="${data[i].id}" class="text-danger delete-row float-right"  ><i class="fa fa-trash-alt"></i> Xóa</a>
                                 </td>
                         </tr>`
-                        );
-                    };
-                    // Delete a row
-                    delRow();
-                }
-            );
-            // Delete with input checked
-            $("#del-button").on("click", function () {
+                    );
+                };
+
+                pagination(data, status, req);
+
+                // Delete a row
+                delRow();
+            }
+        );
+        // Delete with input checked
+
+        $("#del-button").on("click", function () {
+            if (isLogIn) {
                 let checkedArr = [];
                 let checkGroup = $(".check-del");
                 for (let i = 0; i < checkGroup.length; i++) {
                     if ($(checkGroup[i]).is(":checked")) {
                         checkedArr.push($(checkGroup[i]).attr("name"));
-                        // console.log($(checkGroup[i]).attr("name"));
                     }
                 }
-
                 if (checkedArr.length > 0) {
-                    $(".modal-title").text("Bạn có muốn xóa " + checkedArr.length + " học viên?");
+                    $(".modal-title").text("Bạn có muốn xóa " + checkedArr.length + " thành viên?");
                     $("#multi-del").css("display", "inline-block");
                     $(".nope").text("Khồng!");
+                    $("#alertModal").modal("show");
                     $("#multi-del").off("click").on("click", function () {
                         for (let i = 0; i < checkedArr.length; i++) {
                             $("a[rowid = " + checkedArr[i] + "]")
@@ -192,29 +255,33 @@
                                     "https://linhtrinhviet.herokuapp.com/users" +
                                     "/" +
                                     checkedArr[i],
+                                headers: {
+                                    'Authorization': bearerToken,
+                                },
                             }).done(function () {
                                 console.log("deleted user's id: " + checkedArr[i]);
+                            }).fail(function () {
+                                isLogIn = false;
+                                $("#loginModal").modal("show");
                             });
                         }
                     });
                 } else {
                     $("#multi-del").css("display", "none");
                     $(".nope").text("OK!");
-                    $(".modal-title").text("Bạn cần tick chọn học viên muốn xoá trên danh sách!");
+                    $(".modal-title").text("Bạn cần tick chọn thành viên muốn xoá trên danh sách!");
+                    $("#alertModal").modal("show");
                 }
-            });
-        }
-        loadDoc(page, limit, sortType, orderType);
+            } else {
+                $("#loginModal").modal("show");
+            }
 
-        // pagination
-
-        $.get(API_USERS).done(pagination);
-
-           
-
-    </script>
+        });
+    }
+    loadDoc(page, limit, sortType, orderType);
+</script>
 
 
-</body>
+
 
 </html>
