@@ -317,7 +317,7 @@ $("#desc").click(function () {
   orderType = "desc";
   $.get(
     API_USERS + `?_page=1&_limit=10&_sort=id&_order=${orderType} `,
-    function (data, status) {
+    function (data, status, req) {
       $("#loading").hide();
       console.log("Status: " + status);
       for (let i = 0; i < data.length; i++) {
@@ -340,7 +340,7 @@ $("#desc").click(function () {
       }
       // Delete a row
       delRow();
-      $.get(API_USERS).done(pagination);
+      pagination(data, status, req);
     }
   );
 });
@@ -350,7 +350,7 @@ $("#asc").click(function () {
   orderType = "asc";
   $.get(
     API_USERS + `?_limit=${limit}&_sort=${sortType}&_order=${orderType}`,
-    function (data, status) {
+    function (data, status, req) {
       $("#loading").hide();
       console.log("Status: " + status);
       for (let i = 0; i < data.length; i++) {
@@ -374,7 +374,7 @@ $("#asc").click(function () {
 
       // Delete a row
       delRow();
-      $.get(API_USERS).done(pagination);
+      pagination(data, status, req);
     }
   );
 });
