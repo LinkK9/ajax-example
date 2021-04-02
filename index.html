@@ -29,7 +29,7 @@
 
         <div class="top-bar d-flex align-items-center justify-content-between mb-2">
             <div class="add-remove">
-                <button type="button" class="btn btn-success" onclick="location.href='create.html'"><i
+                <button type="button" id="add-new" class="btn btn-success" ><i
                         class="fa fa-plus-circle"></i> Thêm Thành viên</button>
                 <button type="button" id="del-button" class="btn btn-danger d-inline-block ml-2"><i
                         class="fa fa-minus-circle"></i>
@@ -279,6 +279,13 @@
         });
     }
     loadDoc(page, limit, sortType, orderType);
+    $("#add-new").click(function(){
+        if(isLogIn){
+            window.location.href = "create.html"
+        }else{
+            $("#loginModal").modal("show");
+        }
+    });
 </script>
 
 
