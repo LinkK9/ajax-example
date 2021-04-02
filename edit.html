@@ -87,21 +87,6 @@
         let userId = new URLSearchParams(window.location.search).get("id");
         getUserById(userId);
 
-        $("#add-user").on("click", function () {
-            $.post(
-                "https://linhtrinhviet.herokuapp.com/users",
-                {
-                    name: $("#name").val(),
-                    birthday: $("#birthYear").val(),
-                    email: $("#email").val(),
-                    phone: $("#phone").val(),
-                },
-                function () {
-                    window.location.href = "index.html";
-                }
-            );
-        });
-
         $("#btn-save").on("click", function () {
             let searchParams = new URLSearchParams(window.location.search);
             let userId = searchParams.get("id");
@@ -115,6 +100,9 @@
                     email: $("#email").val(),
                     phone: $("#phone").val(),
                 },
+                headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
             }).done(function () {
                 window.location.href = "index.html";
             });

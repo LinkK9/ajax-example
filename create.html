@@ -74,34 +74,18 @@
     <script src='js/main.js'></script>
     <script>
         $("#add-user").on("click", function () {
-            $.post(
-                "https://linhtrinhviet.herokuapp.com/users",
-                {
+
+            $.ajax({
+                method: "POST",
+                url: API_USERS,
+                data: {
                     name: $("#name").val(),
                     birthday: revertDate($("#birthYear").val()),
                     email: $("#email").val(),
                     phone: $("#phone").val(),
                 },
-                function () {
-                    window.location.href = "index.html";
-                }
-            );
-        });
-
-        $("#btn-save").on("click", function () {
-            let searchParams = new URLSearchParams(window.location.search);
-            let userId = searchParams.get("id");
-
-            $.ajax({
-                method: "PUT",
-                url: "https://linhtrinhviet.herokuapp.com/users" + "/" + userId,
-                data: {
-                    name: $("#name").val(),
-                    birthday: $("#birthYear").val(),
-                    email: $("#email").val(),
-                    phone: $("#phone").val(),
-                },
-            }).done(function () {
+                headers: { 'Authorization': bearerToken },
+            }).done(function(){
                 window.location.href = "index.html";
             });
         });

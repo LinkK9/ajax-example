@@ -96,7 +96,7 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">
+                            <h5 class="modal-title" id="modal-del-confirm">
                                 Bạn có muốn xóa thành viên ?
                             </h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -213,7 +213,7 @@
                                 <td>${data[i].email}</td>
                                 <td>${data[i].phone}</td>
                                 <td>
-                                    <a href="edit.html?id=${data[i].id}"><i class="fa fa-edit"></i> Chỉnh sửa</a>
+                                    <a class="edit-info" href="edit.html?id=${data[i].id}"><i class="fa fa-edit"></i> Chỉnh sửa</a>
                                     <a rowid="${data[i].id}" class="text-danger delete-row float-right"  ><i class="fa fa-trash-alt"></i> Xóa</a>
                                 </td>
                         </tr>`

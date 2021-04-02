@@ -5,7 +5,8 @@ let page = "1";
 let limit = "10";
 let sortType = "id";
 let orderType = "desc";
-let isLogIn = false;
+// let isLogIn = false;
+let isLogIn = JSON.parse(localStorage.getItem("isLogIn"));
 let token = localStorage.getItem("token");
 let bearerToken = "Bearer " + token;
 let url =
@@ -61,7 +62,7 @@ function delRow() {
     if (isLogIn) {
       let delId = $(this).attr("rowid");
       let name = $(this).parent().prev().prev().prev().prev().text();
-      $(".modal-title").text("Bạn có muốn xóa thành viên " + name + "?");
+      $("#modal-del-confirm").text("Bạn có muốn xóa thành viên " + name + "?");
       $("#alertModal").modal("show");
       $("#multi-del")
         .off("click")
@@ -74,16 +75,18 @@ function delRow() {
             method: "DELETE",
             url: API_USERS + "/" + delId,
             headers: {
-              'Authorization': bearerToken,
-           },
-          }).done(function () {
-            console.log("deleted user's id: " + delId);
-          }).fail(function(){
-            isLogIn = false;
-            $("#loginModal").modal("show");
-          });
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          })
+            .done(function () {
+              console.log("deleted user's id: " + delId);
+            })
+            .fail(function () {
+              isLogIn = false;
+              $("#loginModal").modal("show");
+            });
         });
-    }else{
+    } else {
       $("#loginModal").modal("show");
     }
   });
@@ -382,36 +385,54 @@ function revertDate(str) {
   return arr[2] + "/" + arr[1] + "/" + arr[0];
 }
 
-
 // login
 $(".loged").hide();
 $("#wrong").hide();
-$("#log-button").off("click").click( function(){
-  $("#loadingModal").modal("show");
-  $.ajax({
-    method: "POST",
-    url: API + "login",
-    data: {
-      "email" : $("#log-email").val(),
-      "password": $("#log-pass").val(),
-    }
-  }).done(
-    function(data, status){
-      $("#loginModal").modal("hide");
-      $(".modal-backdrop").hide();
-      $("#loadingModal").hide();
-      console.log("status: " + status);
-      localStorage.setItem("token", data.token);
-      isLogIn = true;
-      $("#log-in").hide();
-      $(".loged").show();
-      $(".this-user").text("Xin Chào " + data.name + "!");
-    }
-  ).fail(
-    function(status){
-      $("#loadingModal").hide();
-      $("#wrong").show();
-      console.log("status: " + status);
-    }
-  )
+if (isLogIn) {
+  $("#log-in").hide();
+  $(".loged").show();
+  $(".this-user").text("Xin Chào " + localStorage.getItem("userName") + "!");
+}
+$("#log-button")
+  .off("click")
+  .click(function () {
+    $("#loadingModal").modal("show");
+    $.ajax({
+      method: "POST",
+      url: API + "login",
+      data: {
+        email: $("#log-email").val(),
+        password: $("#log-pass").val(),
+      },
+    })
+      .done(function (data, status) {
+        $("#loginModal").modal("hide");
+        $(".modal-backdrop").hide();
+        $("#loadingModal").hide();
+
+        console.log("status: " + status);
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("userName", data.name);
+        localStorage.setItem("isLogIn", "true");
+        isLogIn = true;
+        $("#log-in").hide();
+        $(".loged").show();
+        $(".this-user").text("Xin Chào " + data.name + "!");
+        $("#log-email").val("");
+        $("#log-pass").val("");
+      })
+      .fail(function (status) {
+        $("#loadingModal").hide();
+        $("#wrong").show();
+        console.log("status: " + status);
+      });
+  });
+
+// logout
+$("#log-out").click(function () {
+  localStorage.removeItem("token");
+  localStorage.setItem("isLogIn", "false");
+  isLogIn = false;
+  $("#log-in").show();
+  $(".loged").hide();
 });
